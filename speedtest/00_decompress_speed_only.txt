@@ -42,3 +42,9 @@ real    1m45.836s
 user    2m46.920s
 sys     0m55.736s
 
+
+root@mysql-test-restore:/_mysql_backup# time (pigz -dc mysql_repl_2019_07_01_01_17.sql.gz > /mysql/mysql-data/extracted.sql; sync; sleep 1; sync; sync)
+
+real    2m25.914s
+user    2m44.564s
+sys     1m9.004s

@@ -29,3 +29,36 @@ TODO:
 - mogucnost live importa da rsyncamo file i iz njega saljemo, a import da radi kao "tail -F" dok ne dodje do komandi koje su za kraj filea
   alternativno da moze direktno i bez snimanja na disk, ali da ima retry ako pukne i sl.
 - publish github
+
+- support za vise baza? koristi samo zadnji "^USE" onda
+
+
+- kako izbjeci serijalizaciju? npr. dok dodjem do documents.idb na njemu ce
+  master blokirati i nece slati nista vise u paralelizaciju dok ne zavrsi.
+  jedna ideja je koristiti uncompressed .sql file pa master samo da seeka i
+  sprema pozicije gdje pocinju tablice, ali to nece raditi na pipeu (streamu
+  od pigz -dc). mozda uvijek uncompress (sa onom "tail -F" detekcijom)? to bi radilo, 
+  ali paziti koliko diska imamo slobodno!
+
+  zapravo master write svaku tablicu u svoj file (compressed? LZO? uncompressed) 
+  sa dodanim headerima, a onda svaki thread (parallel? xargs -P?) da cita
+  svoju tablicu, importa, i rm-a kada je gotov. 
+  ramdisk maybe possible ako nisu prevelike? ili mysql_tmp dir da koristi.
+  (pa onda se mjesto smanjuje kako baza raste)
+
+- ici po velicini ? nema smisla fork mysqla 100 puta za 100 malih tablica od 1K, 
+  to moze sve ici u jedan mysql.
+
+- mv/rm na starom strganom masteru; pa rsync -z raw baza sa slavea - brzina?
+  za compare i za pisanje procedure...
+
+- u global master threadu (pocetak i kraj) radi SET MASTER i postavljanje i gasenje globalnih varijabli
+  (sql_bin_log=0, start/stop slave itd)
+
+
+SADA;
+- probaj test sa RAMDISK za mysql!
+- probaj brzinu bez tomsoft-common i zz* konfiga
+
+- mysqlimport brzine sa 4, 16, 24 threada
+- opcije za skip track_log, del_log itd (samo kreirati prazne tablice, no data)
