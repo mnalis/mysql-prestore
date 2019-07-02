@@ -1,0 +1,44 @@
+root@mysql-test-restore:/_mysql_backup# time pigz -dc mysql_repl_2019_07_01_01_17.sql.gz | perl -pe 'print if /DODOINSERT/' | dd of=/dev/null
+113188288+1 records in
+113188288+1 records out
+57952403512 bytes (58 GB) copied, 228.316 s, 254 MB/s
+
+real    3m48.318s
+user    5m16.484s
+sys     2m22.056s
+
+
+root@mysql-test-restore:/_mysql_backup# time pigz -dc mysql_repl_2019_07_01_01_17.sql.gz | env LC_ALL=C fgrep DODOINSERT | perl -pe 'print if /DODOINSERT/' | dd of=/dev/null
+0+0 records in
+0+0 records out
+0 bytes (0 B) copied, 107.726 s, 0.0 kB/s
+
+real    1m47.729s
+user    2m56.536s
+sys     0m54.940s
+
+
+root@mysql-test-restore:/_mysql_backup# time pigz -dc mysql_repl_2019_07_01_01_17.sql.gz > /dev/null
+
+real    1m44.964s
+user    2m44.584s
+sys     0m16.164s
+
+
+root@mysql-test-restore:/_mysql_backup# time pigz -dc mysql_repl_2019_07_01_01_17.sql.gz | perl -pe 'print if /DODOINSERT/' | dd of=/dev/null
+113188288+1 records in
+113188288+1 records out
+57952403512 bytes (58 GB) copied, 224.034 s, 259 MB/s
+
+real    3m44.035s
+user    5m17.076s
+sys     2m18.456s
+
+
+root@mysql-test-restore:/_mysql_backup# time pigz -dc mysql_repl_2019_07_01_01_17.sql.gz | wc -c
+57952403512
+
+real    1m45.836s
+user    2m46.920s
+sys     0m55.736s
+

@@ -1,0 +1,20 @@
+root@mysql-test-restore:/etc/mysql/conf.d# date; echo import sa eatmydata mysqldom i prvim blokom opcija; time pigz -dc /_mysql_backup/mysql_repl_2019_07_01_01_17.sql.gz | mysql
+Tue Jul  2 00:59:24 CEST 2019
+import sa eatmydata mysqldom i prvim blokom opcija
+
+real    73m14.702s
+user    14m29.700s
+sys     1m5.072s
+
+root@mysql-test-restore:/etc/mysql/conf.d# cat zz_fast_fixme.cnf
+[mysqld]
+bulk_insert_buffer_size=512M
+innodb_flush_log_at_trx_commit=2
+key_cache_block_size=4096
+myisam_block_size=4K
+myisam_repair_threads=2
+#sql_log_bin=0
+innodb-doublewrite=0
+wait_timeout=30000
+max_allowed_packet=256M
+root@mysql-test-restore:/etc/mysql/conf.d#

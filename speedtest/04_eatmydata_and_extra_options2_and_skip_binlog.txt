@@ -1,0 +1,12 @@
+root@mysql-test-restore:/etc/mysql/conf.d# /etc/init.d/mysql stop; eatmydata /etc/init.d/mysql start
+Stopping MySQL database server: mysqld.
+Starting MySQL database server: mysqld ..
+Checking for tables which need an upgrade, are corrupt or were
+not closed cleanly..
+root@mysql-test-restore:/etc/mysql/conf.d# date; echo import sa eatmydata mysqldom i drugim blokom opcija sa skip binlog; time pigz -dc /_mysql_backup/mysql_repl_2019_07_01_01_17.sql.gz | mysql
+Tue Jul  2 02:32:22 CEST 2019
+import sa eatmydata mysqldom i drugim blokom opcija sa skip binlog
+
+real    69m18.621s
+user    14m22.612s
+sys     1m3.372s

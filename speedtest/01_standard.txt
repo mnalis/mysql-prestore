@@ -1,0 +1,7 @@
+root@mysql-test-restore:/_mysql_backup# date; echo regularni import sa obicnim mysqlom; time pigz -dc mysql_repl_2019_07_01_01_17.sql.gz | mysql
+Mon Jul  1 21:18:13 CEST 2019
+regularni import sa obicnim mysqlom
+
+real    84m44.537s
+user    14m43.080s
+sys     1m8.852s
