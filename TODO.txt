@@ -1,0 +1,31 @@
+nemamo mysqlpump, niti nam odgovora mysqldump --tab (koji kreira hrpu fileova) / mysql import
+nego zelimo handleati klasicni mysqldump (compressed) file.
+
+research sto treba i bilo bi dobro
+
+TODO:
+- headere (Sve prije prve tablice / db) repliciraj za sve. a footere? check da li treba ili samo u master threadu. paziti fork i novi connection za svaki thread.
+  vidi sto od headera treba samo jednom napraviti (tipa flush logs; stop slave...)
+- stop slave i master za replikaciju;
+- firewall clients;
+- za import baza iz mysqldumpa paralelno X tablica
+- i check da li je rezultat isti na kraju.
+- set session bulk_insert_buffer_size = 512M ?
+- SET GLOBAL read_only = ON; SET LOCAL read_only = OFF; ?
+- set autocommit =0 na pocetku i commit na kraju? benchmark brzina.
+- idi do DROP TABLE IF EXISTS...CREATE TABLE...LOCK TABLES...INSERT *x... UNLOCK TABLES
+- vidi za brzinu:
+  https://www.percona.com/blog/2018/02/22/restore-mysql-logical-backup-maximum-speed/
+- posebno innodb_flush_log_at_trx_commit = 2 , key_cache_block_size=4096, myisam_block_size=4K, myisam_repair_threads = 2+
+  bulk_insert_buffer_size=512M, SET SQL_LOG_BIN=0;
+  i ostalo sa https://dba.stackexchange.com/q/13446/53319
+
+- restart ovako? service mysql restart --innodb-doublewrite=0
+- increase values na barem:
+  max_allowed_packet=256M
+  wait_timeout=30000
+  https://dba.stackexchange.com/q/83125/53319
+
+- mogucnost live importa da rsyncamo file i iz njega saljemo, a import da radi kao "tail -F" dok ne dodje do komandi koje su za kraj filea
+  alternativno da moze direktno i bez snimanja na disk, ali da ima retry ako pukne i sl.
+- publish github
