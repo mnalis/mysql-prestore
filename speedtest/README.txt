@@ -57,5 +57,5 @@ test file:
 	957 tables with 133 million rows in them.
 	5650561263 bytes (5.26 GB) mysql_repl_2019_07_01_01_17.sql.gz compressed - 57952403512 bytes (53.97 GB) uncompressed
 	mysqldump --tab format: 38GB, tar.gz 3.1 GB
-	61.3 GB mysqld DB on disk (+fixed 3 GB ibdata + 2*1 GB ib_logfile*) = 66.3 GB (tar.gz 8.7 GB)
-	
+	61.3 GB mysqld DB on disk (.MYD/.MYI/.ibd/.frm + fixed 3 GB ibdata + 2*1 GB ib_logfile*) = 66.3 GB (tar.gz 8.7 GB)
+	mydumper/myloader format: 46 GB (tar.gz 5.0 GB)

@@ -95,8 +95,9 @@ TODO:
 
 SADA;
 - probaj brzinu bez tomsoft-common i zz* konfiga 
+- sto sam dodao u zz* da sa 75 se uspio na 85 min? nadji i izoliraj.
+
 - usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
-- tar zcf mysql-files (mysqldump --tab) i tar zcf /var/lib/mysql (*.ibd, *.MYD, ibdata)
 - probaj head + tableXXXX (od documents i track_log - probati uvijek i myisam i innodb) pa import sa:
 	+ autocommit=0 + commit
 	- sa paralelnih par INSERTova
@@ -106,12 +107,10 @@ SADA;
 	  i za neku innodb tablicu (del_log, documents?)
 
 - probaj mydumper
-	- velicina (raw i .tar.gz)
-	- debian jessie 0.6.1-1
 	- upstream https://launchpad.net/mydumper (https://github.com/maxbube/mydumper) 0.9.5-1xenial
 	- branch https://www.percona.com/blog/2015/01/21/importing-big-tables-large-indexes-myloader/ (bzr branch lp:~david-ducos/mydumper/mydumper)
 	  for faster indexes
-	- mydump --rows 
+	- mydumper --rows 
 	  https://github.com/maxbube/mydumper/issues/78
 
 
