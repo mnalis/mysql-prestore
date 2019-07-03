@@ -61,6 +61,11 @@ TODO:
 - opcije za skip track_log, del_log itd (samo kreirati prazne tablice, no data)
 
 SADA;
-- probaj test sa RAMDISK za mysql!
-- probaj brzinu bez tomsoft-common i zz* konfiga
-- usporedba brzina ramdisk i mysqlimport stavi u speedtest/
+- probaj brzinu bez tomsoft-common i zz* konfiga 
+- usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
+
+- probaj head + tableXXXX (od documents i/ili track_log) pa import sa:
+	- autocommit=0 + commit
+	- sa paralelnih par INSERTova
+	- bez gasenja/paljenja indexa
+	- insert DELAYED ?
