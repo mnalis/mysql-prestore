@@ -66,13 +66,20 @@ TODO:
 
 - kada imam radecu scriptu, prijavi odgovor na onih par pitanja na stackoverflow i dba.stackexchange
 
+- mozda cak split posebno CREATE TABLE, a posebno LOCK/INSERT/UNLOCK ?
+  jer onda bi mogli create sve sa zadnjom vrijednosti autoinc u CREATE TABLE,
+  pa onda u tablice track_log, del_log i sl. nebitne insertati bez lockanja as-we-go
+  (scripta da sama pusti korisnike da se spajaju. I da ih disablea prije toga na startu
+   staviti kao opciju ili kao default sa --disable-connections)
 
 SADA;
 - probaj brzinu bez tomsoft-common i zz* konfiga 
 - usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
 
-- probaj head + tableXXXX (od documents i/ili track_log) pa import sa:
+- probaj head + tableXXXX (od documents i track_log - probati uvijek i myisam i innodb) pa import sa:
 	- autocommit=0 + commit
 	- sa paralelnih par INSERTova
 	- bez gasenja/paljenja indexa
 	- insert DELAYED ?
+	- sa razlicitim onim repair_threads koliko treba za track_log da se importa (sa insert, i sa load data infile)
+	  i za neku innodb tablicu (del_log, documents?)
