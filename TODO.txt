@@ -8,6 +8,8 @@ TODO:
 - headere (Sve prije prve tablice / db) repliciraj za sve. a footere? check da li treba ili samo u master threadu. paziti fork i novi connection za svaki thread.
   vidi sto od headera treba samo jednom napraviti (tipa flush logs; stop slave...)
 - stop slave i master za replikaciju;
+	set sql_log_bin = 0;
+	set session wsrep_on = 0;
 - firewall clients;
 - za import baza iz mysqldumpa paralelno X tablica
 - i check da li je rezultat isti na kraju.
@@ -33,6 +35,8 @@ TODO:
 
 - support za vise baza? koristi samo zadnji "^USE" onda
 
+- zstd instead of lzop? ili gzip?
+  https://github.com/facebook/zstd
 
 - kako izbjeci serijalizaciju? npr. dok dodjem do documents.idb na njemu ce
   master blokirati i nece slati nista vise u paralelizaciju dok ne zavrsi.
@@ -72,14 +76,58 @@ TODO:
   (scripta da sama pusti korisnike da se spajaju. I da ih disablea prije toga na startu
    staviti kao opciju ili kao default sa --disable-connections)
 
+- optimal index creation?
+  https://github.com/maxbube/mydumper/issues/4
+  ne radi li disable keys/enable keys tocno to?
+  https://dba.stackexchange.com/questions/76565/mysqldumps-disable-keys-have-no-effect-on-import
+  
+  mozemo li iz percone koristiti mysqldump? 
+  https://www.percona.com/doc/percona-server/5.5/management/innodb_expanded_fast_index_creation.html
+  https://www.percona.com/blog/2010/12/09/mysql-optimize-tables-innodb-stop/
+
+- bulk loading
+  https://dev.mysql.com/doc/refman/5.5/en/optimizing-myisam-bulk-data-loading.html
+  https://dev.mysql.com/doc/refman/5.5/en/optimizing-innodb-bulk-data-loading.html
+
+-  --skip-innodb-checksums utjece li na brzinu?
+
+- pt-table-checksum na master/slave konfiguraciji probaj u tomsoftu
+
 SADA;
 - probaj brzinu bez tomsoft-common i zz* konfiga 
 - usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
-
+- tar zcf mysql-files (mysqldump --tab) i tar zcf /var/lib/mysql (*.ibd, *.MYD, ibdata)
 - probaj head + tableXXXX (od documents i track_log - probati uvijek i myisam i innodb) pa import sa:
-	- autocommit=0 + commit
+	+ autocommit=0 + commit
 	- sa paralelnih par INSERTova
 	- bez gasenja/paljenja indexa
 	- insert DELAYED ?
 	- sa razlicitim onim repair_threads koliko treba za track_log da se importa (sa insert, i sa load data infile)
 	  i za neku innodb tablicu (del_log, documents?)
+
+- probaj mydumper
+	- velicina (raw i .tar.gz)
+	- debian jessie 0.6.1-1
+	- upstream https://launchpad.net/mydumper (https://github.com/maxbube/mydumper) 0.9.5-1xenial
+	- branch https://www.percona.com/blog/2015/01/21/importing-big-tables-large-indexes-myloader/ (bzr branch lp:~david-ducos/mydumper/mydumper)
+	  for faster indexes
+	- mydump --rows 
+	  https://github.com/maxbube/mydumper/issues/78
+
+
+- provjeri sve backup/restore da li su uspjesni !!
+	ispravno stanje restore regularni iz mysqldumpa je:
+	mysql> SELECT count(*), SUM(TABLE_ROWS) FROM information_schema.tables WHERE table_schema = 'dupin';
+	+----------+-----------------+
+	| count(*) | SUM(TABLE_ROWS) |
+	+----------+-----------------+
+	|      957 |       130976135 |
+	+----------+-----------------+
+
+	a iz dupin2 ne valja:
+	mysql> SELECT count(*), SUM(TABLE_ROWS) FROM information_schema.tables WHERE table_schema = 'dupin2';
+	+----------+-----------------+
+	| count(*) | SUM(TABLE_ROWS) |
+	+----------+-----------------+
+	|      955 |       129702882 |
+	+----------+-----------------+
