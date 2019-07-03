@@ -1,6 +1,6 @@
 #!/usr/bin/perl -wT
 # 
-# started by Matija Nalis <mnalis-git@voyager.hr> 2019-07-01
+# started by Matija Nalis <mnalis-git@voyager.hr> 2019-07-01 GPLv3+
 #
 # parses standard mysqldump one-file-dump, and reimports it in parallel 
 # to speed up restoring database.
