@@ -55,10 +55,11 @@ TODO:
 - u global master threadu (pocetak i kraj) radi SET MASTER i postavljanje i gasenje globalnih varijabli
   (sql_bin_log=0, start/stop slave itd)
 
+- skip CHANGE MASTER TO (ili prebaci u ".tail" file iz ".head")
+
+- opcije za skip track_log, del_log itd (samo kreirati prazne tablice, no data)
 
 SADA;
 - probaj test sa RAMDISK za mysql!
 - probaj brzinu bez tomsoft-common i zz* konfiga
 
-- mysqlimport brzine sa 4, 16, 24 threada
-- opcije za skip track_log, del_log itd (samo kreirati prazne tablice, no data)
