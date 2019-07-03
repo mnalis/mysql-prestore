@@ -60,6 +60,13 @@ TODO:
 
 - opcije za skip track_log, del_log itd (samo kreirati prazne tablice, no data)
 
+- za TAIL da pocne odmah nakon views sto zavrse, iako nema posebnog separatora?
+
+- zalba ako ne nadje terminatore za kraj tablica/baze itd gdje misli da bi trebali biti
+
+- kada imam radecu scriptu, prijavi odgovor na onih par pitanja na stackoverflow i dba.stackexchange
+
+
 SADA;
 - probaj brzinu bez tomsoft-common i zz* konfiga 
 - usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
