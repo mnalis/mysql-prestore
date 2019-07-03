@@ -4,6 +4,7 @@ nego zelimo handleati klasicni mysqldump (compressed) file.
 research sto treba i bilo bi dobro
 
 TODO:
+- fix README.md (i u tablicu stavi usporedbu brzina)
 - headere (Sve prije prve tablice / db) repliciraj za sve. a footere? check da li treba ili samo u master threadu. paziti fork i novi connection za svaki thread.
   vidi sto od headera treba samo jednom napraviti (tipa flush logs; stop slave...)
 - stop slave i master za replikaciju;
@@ -62,4 +63,4 @@ TODO:
 SADA;
 - probaj test sa RAMDISK za mysql!
 - probaj brzinu bez tomsoft-common i zz* konfiga
-
+- usporedba brzina ramdisk i mysqlimport stavi u speedtest/
