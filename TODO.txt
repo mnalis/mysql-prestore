@@ -93,6 +93,10 @@ TODO:
 
 - pt-table-checksum na master/slave konfiguraciji probaj u tomsoftu
 
+- unlink sve temp files prvo!
+- views, functions, procedures da idu u .tail
+- opcija da prvo pokrene najvece db? (sort by size) ili default po redoslijedu
+
 SADA;
 - probaj brzinu bez tomsoft-common i zz* konfiga 
 - sto sam dodao u zz* da sa 75 se uspio na 85 min? nadji i izoliraj.
@@ -123,10 +127,6 @@ SADA;
 	|      957 |       130976135 |
 	+----------+-----------------+
 
-	a iz dupin2 ne valja:
-	mysql> SELECT count(*), SUM(TABLE_ROWS) FROM information_schema.tables WHERE table_schema = 'dupin2';
-	+----------+-----------------+
-	| count(*) | SUM(TABLE_ROWS) |
-	+----------+-----------------+
-	|      955 |       129702882 |
-	+----------+-----------------+
+- provjeri i mydumper i mysqlimport da li dobro ucitavaju sve tablice, i ako ne, zasto ne?
+- vidi razlika velicina dupin i dupin2 zasto?? koje tablice/indexi? optimize table da li mijenja situaciju?
+- vidi T:265096 za extra benchmark info i dodatne TODO (INSERT DELAYED za track_log npr. nakon enable klijenata)
