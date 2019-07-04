@@ -107,7 +107,7 @@ SADA;
 - usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
 - probaj head + tableXXXX (od documents i track_log - probati uvijek i myisam i innodb) pa import sa:
 	+ autocommit=0 + commit
-	- sa paralelnih par INSERTova
+	- sa paralelnih par INSERTova (Test del_log innodb)
 	+ bez gasenja/paljenja indexa
 	+ insert DELAYED ?
 	+ sa razlicitim onim repair_threads koliko treba za track_log da se importa (sa insert, i sa load data infile)
@@ -129,3 +129,5 @@ SADA;
 - provjeri i mydumper i mysqlimport da li dobro ucitavaju sve tablice, i ako ne, zasto ne?
 - vidi razlika velicina dupin i dupin2 zasto?? koje tablice/indexi? optimize table da li mijenja situaciju?
 - vidi T:265096 za extra benchmark info i dodatne TODO (INSERT DELAYED za track_log npr. nakon enable klijenata)
+
+- debug ispisi

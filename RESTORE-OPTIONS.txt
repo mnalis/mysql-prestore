@@ -31,5 +31,5 @@ In case of catastrophic failure of master mysqld data, options to restore work A
 	- start master with eatmydata
 	- start importing while backup is transfering:
 		- tail -f backup.sql.gz | pigz -dc | mysql-prestore
-	- when all data is rsynced, and mysql-prestore finishes, and nothing in "mysqladmin processlist", crtl-c "tail -f"
+	- when all data is rsynced, and mysql-prestore finishes, and "pv -d `pidof pigz`" says it's done, and nothing in "mysqladmin processlist": then do crtl-c on "tail -f"
 	- restart master
