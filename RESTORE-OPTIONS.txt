@@ -1,0 +1,35 @@
+In case of catastrophic failure of master mysqld data, options to restore work ASAP:
+
+(1) if have cluster or slave with enough resources (network bandwidth, memory, cpu, fast disks)
+	- shutdown slave
+	- promote slave to master, change DNS or use mysql-proxy to redirect queries 
+	- restore mysql table from master for grants (if not the same)
+	- start (ex-slave) now-master
+
+(2) if slave machine is too slow, but has good network connectivity, and is same version/architecture as master
+	- shutdown master, slave
+	- mv master:/var/lib/mysql out of the way (or delete all but mysql table)
+	- rsync -az --delete /var/lib/mysql/* from slave to broken master
+	- restore mysql table from master for grants (if not the same)
+	- start master again
+
+(3) if master-slave network is too slow (or no slave), and have mysqldump backup on master (TOUCHY, POSSIBLE DATA LOSS IN BINLOG bad)
+	- shutdown master, move out (or remove) all but mysql DB in /var/lib/mysql/ and /var/log/mysql
+	- start master with eatmydata
+	- reimport DB:
+		- if parallel CPUs: "pigz -dc backup.sql.gz | mysql-prestore"
+		- if one CPU or legacy: "gzip -dc backup.sql.gz | mysql"
+	- try to reimport binlogs according to MASTER_POS (if exists, and not corrupted, and have time enough to detemine)
+	- restart master
+
+(4) if master-slave network is too slow, and no (or too old) backup on master
+	- slave stop sync (mysql -e "stop slave";)
+	- initiate new backup on slave, without optional tables (track_log, del_log, ...)
+	- make a "while true; do rsync --partial slave:backup.sql.gz .; done" on master
+		FIXME: something better, equivalent of "wget -c" so file can only be appended to, never last block retransfered... sftp "reget" ?
+	- shutdown master, move out (or remove) all but mysql DB in /var/lib/mysql/ and /var/log/mysql
+	- start master with eatmydata
+	- start importing while backup is transfering:
+		- tail -f backup.sql.gz | pigz -dc | mysql-prestore
+	- when all data is rsynced, and mysql-prestore finishes, and nothing in "mysqladmin processlist", crtl-c "tail -f"
+	- restart master

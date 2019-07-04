@@ -97,17 +97,20 @@ TODO:
 - views, functions, procedures da idu u .tail
 - opcija da prvo pokrene najvece db? (sort by size) ili default po redoslijedu
 
+- opcija da preskoci neku bazu u potpunisti bez zapisivanja na disk (ako je ne zelimo) 
+  ili da je zapise ali ne importa (npr. track_log, del_log koje mozemo import i nakon pustanja klijenata u rad)
+
+
 SADA;
-- probaj brzinu bez tomsoft-common i zz* konfiga 
 - sto sam dodao u zz* da sa 75 se uspio na 85 min? nadji i izoliraj.
 
 - usporedba brzina ramdisk i mysqlimport i ostali iz ticketa stavi u speedtest/
 - probaj head + tableXXXX (od documents i track_log - probati uvijek i myisam i innodb) pa import sa:
 	+ autocommit=0 + commit
 	- sa paralelnih par INSERTova
-	- bez gasenja/paljenja indexa
-	- insert DELAYED ?
-	- sa razlicitim onim repair_threads koliko treba za track_log da se importa (sa insert, i sa load data infile)
+	+ bez gasenja/paljenja indexa
+	+ insert DELAYED ?
+	+ sa razlicitim onim repair_threads koliko treba za track_log da se importa (sa insert, i sa load data infile)
 	  i za neku innodb tablicu (del_log, documents?)
 
 - probaj mydumper
@@ -120,12 +123,8 @@ SADA;
 
 - provjeri sve backup/restore da li su uspjesni !!
 	ispravno stanje restore regularni iz mysqldumpa je:
-	mysql> SELECT count(*), SUM(TABLE_ROWS) FROM information_schema.tables WHERE table_schema = 'dupin';
-	+----------+-----------------+
-	| count(*) | SUM(TABLE_ROWS) |
-	+----------+-----------------+
-	|      957 |       130976135 |
-	+----------+-----------------+
+	mysql> select concat("select '",table_name,"', count(*) from ",table_name,";")  from `information_schema`.`tables`  WHERE `table_schema` = 'dupin' into outfile "/mysql/mysql-files/zbroji.sql";
+	shell% mysql dupin < /mysql/mysql-files/zbroji.sql > dupin-p1.txt; diff dupin.txt dupin-p1.txt
 
 - provjeri i mydumper i mysqlimport da li dobro ucitavaju sve tablice, i ako ne, zasto ne?
 - vidi razlika velicina dupin i dupin2 zasto?? koje tablice/indexi? optimize table da li mijenja situaciju?
