@@ -6,7 +6,7 @@ research sto treba i bilo bi dobro
 TODO:
 - fix README.md (i u tablicu stavi usporedbu brzina)
 - headere (Sve prije prve tablice / db) repliciraj za sve. a footere? check da li treba ili samo u master threadu. paziti fork i novi connection za svaki thread.
-  vidi sto od headera treba samo jednom napraviti (tipa flush logs; stop slave...)
+  vidi sto od headera treba samo jednom napraviti (tipa flush logs; stop slave, create/drop database, set master to...)
 - stop slave i master za replikaciju;
 	set sql_log_bin = 0;
 	set session wsrep_on = 0;
@@ -52,7 +52,8 @@ TODO:
   (pa onda se mjesto smanjuje kako baza raste)
 
 - ici po velicini ? nema smisla fork mysqla 100 puta za 100 malih tablica od 1K, 
-  to moze sve ici u jedan mysql.
+  to moze sve ici u jedan mysql. ili pool threadova pa svaki uzima novo cim zavrsi, 
+  a ne zatvara forkove mysqla
 
 - mv/rm na starom strganom masteru; pa rsync -z raw baza sa slavea - brzina?
   za compare i za pisanje procedure...
