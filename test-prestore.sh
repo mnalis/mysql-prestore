@@ -1,4 +1,5 @@
 #!/bin/sh
+# -x
 #
 # started by Matija Nalis <mnalis-git@voyager.hr> 2019-08-30 GPLv3+
 # 
@@ -29,7 +30,7 @@ sed -e 's/^-- PRESTORE_ONLY_ONCE: //' < ${IMPORT_DIR}/mysql-prestore.head | $MYS
 
 find $IMPORT_DIR -type f -iname "mysql-prestore.table*" |
 	sort -g |
-	egrep -v 'table000134|table000800' | 	# FIXME - delete, for test only
+	egrep -v 'table00000134|table00000800' | 	# FIXME - delete, for test only
 	xargs -ri -P $MAX_CPU sh -c "cat ${IMPORT_DIR}/mysql-prestore.head {} | $MYSQL_CMD"
 
 cat ${IMPORT_DIR}/mysql-prestore.head ${IMPORT_DIR}/mysql-prestore.tail | $MYSQL_CMD
