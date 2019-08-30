@@ -8,7 +8,7 @@
 IMPORT_DIR=./tmp 
 MYSQL_CMD="mysql"
 #MYSQL_CMD="less"
-MYSQL_CMD='egrep  ^CREATE'
+#MYSQL_CMD='egrep ^CREATE'
 
 if [ -z "$1" ]
 then
