@@ -79,7 +79,7 @@ TODO:
 
 - skip CHANGE MASTER TO (ili prebaci u ".tail" file iz ".head")
 
-- opcije za skip track_log, del_log itd (samo kreirati prazne tablice, no data)
+- opcije za skip track_log, del_log itd (samo kreirati prazne tablice sa zadnjim auto_increment_id, no data)
 
 - za TAIL da pocne odmah nakon views sto zavrse, iako nema posebnog separatora?
 
