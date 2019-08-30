@@ -22,11 +22,10 @@ my $file_seq = 0;
 # closes previous, and opens a new file
 sub open_file($) {
 	my ($basename) = @_;
-	return if $file_seq < 0;		# we are already in .tail, do not truncate it
-	my $new_fname = $OUTPUT_DIR . '/mysql-prestore.' . $basename;
+	if ($file_seq < 0) { return }			# we are already in .tail, do not truncate it
 	close $cur_fd if defined $cur_fd;
-	open $cur_fd, '>', $new_fname;
-	$file_seq = -1 if $basename eq 'tail';	# once in ".tail", we won't be opening any new files ever again.
+	open $cur_fd, '>', $OUTPUT_DIR . '/mysql-prestore.' . $basename;
+	if ($basename eq 'tail') { $file_seq = -1 }	# once in ".tail", we won't be opening any new files ever again.
 }
 
 # opens next file for next table
