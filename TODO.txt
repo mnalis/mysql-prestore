@@ -25,6 +25,20 @@ TODO:
 
 - detect TAIL on procedures/functions too. create example db and dump to detect
 
+- opcija da ostavi parsed files na disku (Default) ili da ih brise cim ih zavrsi?
+  SIGUSR1 za switch ako usred importa shvatis da nemas mjesta na disku?
+
+- graceful detection disk full
+- opcija da koristi gzip/pigz/lzop za fileove na disku takodjer (SIGUSR2 switchable?) 
+  ili by default
+
+- alterinative mbuffer za full pipe i disk samo ako mora?
+  https://superuser.com/a/963344/239311
+
+- test prije starta da li imam xargs sa -P, da li ima lzop/pigz itd sto se koristi
+
+- verbose opcija
+
 - restart ovako? service mysql restart --innodb-doublewrite=0
 - increase values na barem:
   max_allowed_packet=256M
