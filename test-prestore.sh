@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 #
 # started by Matija Nalis <mnalis-git@voyager.hr> 2019-08-30 GPLv3+
 # 
