@@ -9,28 +9,38 @@
 use strict;
 use autodie;
 
+my $OUTPUT_DIR = './tmp';
+
+my $RE_NEW_TABLE	= qr'^-- (Table|Final view) structure'i;
+my $RE_TAIL_DETECT	= qr'^-- Dump completed|SET\s.*=\s*@OLD'i;
+my $RE_HEAD_ONLYONCE	= qr'^(DROP DATABASE|CREATE DATABASE|CHANGE MASTER)'i;
+my $MARKER_ONLYONCE	= '-- PRESTORE_ONLY_ONCE: ';
+
 my $cur_fd = undef;
 my $file_seq = 0;
 
 # closes previous, and opens a new file
 sub open_file($) {
 	my ($basename) = @_;
-	my $new_fname = 'tmp/mysql-prestore.' . $basename;
+	return if $file_seq < 0;		# we are already in .tail, do not truncate it
+	my $new_fname = $OUTPUT_DIR . '/mysql-prestore.' . $basename;
 	close $cur_fd if defined $cur_fd;
 	open $cur_fd, '>', $new_fname;
+	$file_seq = -1 if $basename eq 'tail';	# once in ".tail", we won't be opening any new files ever again.
 }
 
 # opens next file for next table
 sub open_next() {
-	my $base = sprintf ('table%.6d', $file_seq++);
+	my $base = sprintf ('table%.8d', $file_seq++);
 	open_file($base);
 }
 
 open_file('head');
 
 while (<STDIN>) {
-	open_next() if /^-- Table structure/;
-	open_file('tail') if /^-- Dump completed/;
+	open_next() if /$RE_NEW_TABLE/;
+	open_file('tail') if /$RE_TAIL_DETECT/;
+	print $cur_fd $MARKER_ONLYONCE if /$RE_HEAD_ONLYONCE/;
 	print $cur_fd $_;
 }
 
