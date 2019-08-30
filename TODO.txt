@@ -23,6 +23,8 @@ TODO:
   bulk_insert_buffer_size=512M, SET SQL_LOG_BIN=0;
   i ostalo sa https://dba.stackexchange.com/q/13446/53319
 
+- detect TAIL on procedures/functions too. create example db and dump to detect
+
 - restart ovako? service mysql restart --innodb-doublewrite=0
 - increase values na barem:
   max_allowed_packet=256M

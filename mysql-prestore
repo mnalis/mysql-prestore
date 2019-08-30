@@ -11,10 +11,16 @@ use autodie;
 
 my $OUTPUT_DIR = './tmp';
 
-my $RE_NEW_TABLE	= qr'^-- (Table|Final view) structure'i;
-my $RE_TAIL_DETECT	= qr'^-- Dump completed|SET\s.*=\s*@OLD'i;
-my $RE_HEAD_ONLYONCE	= qr'^(DROP DATABASE|CREATE DATABASE|CHANGE MASTER)'i;
+# no user serviceable parts below
 my $MARKER_ONLYONCE	= '-- PRESTORE_ONLY_ONCE: ';
+my $RE_HEAD_ONLYONCE	= qr'^(DROP DATABASE|CREATE DATABASE|CHANGE MASTER)'i;
+my $RE_NEW_TABLE	= qr'^-- Table structure'i;
+my $RE_TAIL_DETECT	= qr{
+				^--\ Dump\ completed |
+				^--\ Final\ view\ structure |	# do not parallelize views put them in the tail, since all tables must exist before we try to create them
+				SET\h.*=\h*\@OLD
+			    }ix;
+
 
 my $cur_fd = undef;
 my $file_seq = 0;
@@ -24,7 +30,9 @@ sub open_file($) {
 	my ($basename) = @_;
 	if ($file_seq < 0) { return }			# we are already in .tail, do not truncate it
 	close $cur_fd if defined $cur_fd;
-	open $cur_fd, '>', $OUTPUT_DIR . '/mysql-prestore.' . $basename;
+	my $new_fname = $OUTPUT_DIR . '/mysql-prestore.' . $basename;
+	if (-e $new_fname) { die "$0: ERROR: refuse to clobber: $new_fname" }
+	open $cur_fd, '>', $new_fname;
 	if ($basename eq 'tail') { $file_seq = -1 }	# once in ".tail", we won't be opening any new files ever again.
 }
 
