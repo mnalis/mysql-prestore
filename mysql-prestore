@@ -38,9 +38,9 @@ sub open_next() {
 open_file('head');
 
 while (<STDIN>) {
-	open_next() if /$RE_NEW_TABLE/;
-	open_file('tail') if /$RE_TAIL_DETECT/;
-	print $cur_fd $MARKER_ONLYONCE if /$RE_HEAD_ONLYONCE/;
+	/$RE_NEW_TABLE/ 	and open_next();
+	/$RE_TAIL_DETECT/	and open_file('tail');
+	/$RE_HEAD_ONLYONCE/	and print $cur_fd $MARKER_ONLYONCE ;
 	print $cur_fd $_;
 }
 
